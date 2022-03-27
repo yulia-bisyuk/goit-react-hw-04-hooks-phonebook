@@ -3,32 +3,39 @@ import { nanoid } from 'nanoid'
 
 export class App extends Component {
   state = {
-  contacts: [],
-  name: ''
+    contacts: [],
+    filter: '',
+    name: '',
+    number: '',
   }
 
   handleChange = (e) => {
-    // console.log(e.target.value);
-    this.setState({ name: e.target.value })
-    console.log(this.state);
 
+    const { name, value } = e.currentTarget;
+  
+    this.setState(
+      {[name]: value}
+    )
+  }
+
+  resetForm = () => {
+    this.setState({name: '', number: ''})
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    // const contact = {
-    //   name: this.state.name,
-    //   id: nanoid(),
-    // }
-    // console.log(this.state);
-    this.setState(prevState =>
-    
-      prevState.contacts.push({
+
+    const newContact = {
       name: this.state.name,
+      number: this.state.number,
       id: nanoid(),
-      })
-    )
-  console.log(this.state);
+    }
+  
+    this.setState(({ contacts }) => (
+      { contacts: [...contacts, newContact] }
+    ))
+    console.log(this.state);
+    this.resetForm();
   }
   
   render() {
@@ -40,10 +47,23 @@ export class App extends Component {
            Name
           <input
               type="text"
-              name="name"   
+              name="name"  
+              value={this.state.name}
               onChange={this.handleChange}            
               pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
               title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+              required
+/>
+          </label>
+          <label>
+           Number
+          <input
+              type="tel"
+              name="number"
+               value={this.state.number}
+              onChange={this.handleChange}
+              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
               required
 />
           </label>
@@ -52,10 +72,23 @@ export class App extends Component {
           </button>
         </form>
         <h2>Contacts</h2>
+        <label>
+          Find contacts by name
+          <input
+          type="text"
+              name="filter"  
+              value={this.state.filter}
+              onChange={this.handleChange}            
+              // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+              // title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+              required
+          />
+        
+        </label>
         <ul>
           {this.state.contacts.map((contact) => (
             <li  key={contact.id}>
-              {contact.name}
+              {contact.name}: {contact.number}
             </li>
           ))}
         </ul>
