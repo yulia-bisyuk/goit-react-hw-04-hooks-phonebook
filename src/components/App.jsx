@@ -1,16 +1,59 @@
 import React, { Component } from 'react';
+import ContactForm from './ContactForm';
+import Filter from './Filter';
+import ContactList from './ContactList';
 import { nanoid } from 'nanoid'
 
 export class App extends Component {
+
   state = {
     contacts: [],
     filter: '',
-    name: '',
-    number: '',
   }
 
-  handleChange = (e) => {
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const name = form.elements.name.value;
+    const number = form.elements.number.value;
 
+    const newContact = {
+      name,
+      number,
+      id: nanoid(),
+    }
+
+  // this.state.contacts.map((contact) => {
+  //         if (contact && contact.name === newContact.name) {
+  //       alert(`${newContact.name} is already in contacts`)
+  //        } else {
+  //         this.setState(({ contacts }) => (
+    
+  //     { contacts: [...contacts, newContact] }
+  //   ))
+  //         }
+      
+  //   })
+      
+    
+  
+    this.setState(({ contacts }) => (
+    
+      { contacts: [...contacts, newContact] }
+    ))
+
+    this.state.contacts.map((contact) => {
+      if (contact.name === name)
+        alert(`${name} is already in contacts`)
+    })
+         
+    console.log(this.state);
+    form.reset();
+  
+    
+  }
+
+  handleFilterChange = (e) => {
     const { name, value } = e.currentTarget;
   
     this.setState(
@@ -18,80 +61,33 @@ export class App extends Component {
     )
   }
 
-  resetForm = () => {
-    this.setState({name: '', number: ''})
-  }
+  getFilteredContacts = () => {
+    const { contacts, filter } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter((contact) => contact.name.toLowerCase().includes(normalizedFilter));
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-
-    const newContact = {
-      name: this.state.name,
-      number: this.state.number,
-      id: nanoid(),
-    }
-  
-    this.setState(({ contacts }) => (
-      { contacts: [...contacts, newContact] }
-    ))
-    console.log(this.state);
-    this.resetForm();
   }
   
   render() {
+    const filteredContacts = this.getFilteredContacts();
+
     return (
       <>
         <h1>Phonebook</h1>
-        <form onSubmit={this.handleSubmit}>
-        <label>
-           Name
-          <input
-              type="text"
-              name="name"  
-              value={this.state.name}
-              onChange={this.handleChange}            
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-/>
-          </label>
-          <label>
-           Number
-          <input
-              type="tel"
-              name="number"
-               value={this.state.number}
-              onChange={this.handleChange}
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              required
-/>
-          </label>
-          <button type="submit">
-            Add contact
-          </button>
-        </form>
-        <h2>Contacts</h2>
-        <label>
-          Find contacts by name
-          <input
-          type="text"
-              name="filter"  
-              value={this.state.filter}
-              onChange={this.handleChange}            
-              // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              // title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-          />
+        <ContactForm
+          onSubmit={this.handleSubmit}
+
+        />
         
-        </label>
-        <ul>
-          {this.state.contacts.map((contact) => (
-            <li  key={contact.id}>
-              {contact.name}: {contact.number}
-            </li>
-          ))}
-        </ul>
+        <h2>Contacts</h2>
+        <Filter
+          filter={this.state.filter}
+          onChange={this.handleFilterChange}
+        />
+        <ContactList
+          contacts={filteredContacts}
+        />
+
         </>
     )
   }
