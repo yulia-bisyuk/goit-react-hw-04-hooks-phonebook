@@ -23,34 +23,29 @@ export class App extends Component {
       id: nanoid(),
     }
 
-  // this.state.contacts.map((contact) => {
-  //         if (contact && contact.name === newContact.name) {
-  //       alert(`${newContact.name} is already in contacts`)
-  //        } else {
-  //         this.setState(({ contacts }) => (
+    //     if(this.state.contacts.length !== 0) this.state.contacts.map((contact) => {
+    //       if (contact.name === newContact.name) {
+    //     alert(`${newContact.name} is already in contacts`)
+    //      } else {
+    //       this.setState(({ contacts }) => (
     
-  //     { contacts: [...contacts, newContact] }
-  //   ))
-  //         }
+    //   { contacts: [...contacts, newContact] }
+    // ))
+    //       }
       
-  //   })
+    // })
+    
+    this.setState(({ contacts }) => {
+      if (contacts.some((contact) =>
+        contact.name === name)) { return alert(`${name} is already in contacts`) }
+          
+      else { return { contacts: [...contacts, newContact] } }
       
-    
-  
-    this.setState(({ contacts }) => (
-    
-      { contacts: [...contacts, newContact] }
-    ))
-
-    this.state.contacts.map((contact) => {
-      if (contact.name === name)
-        alert(`${name} is already in contacts`)
     })
-         
+    
     console.log(this.state);
     form.reset();
   
-    
   }
 
   handleFilterChange = (e) => {
@@ -59,6 +54,7 @@ export class App extends Component {
     this.setState(
       {[name]: value}
     )
+
   }
 
   getFilteredContacts = () => {
@@ -68,6 +64,13 @@ export class App extends Component {
 
   }
   
+  deleteContact = (id) => {
+    this.setState(({contacts}) => 
+    ({contacts: contacts.filter(contact => contact.id !== id)})
+    )
+  
+}
+
   render() {
     const filteredContacts = this.getFilteredContacts();
 
@@ -76,7 +79,6 @@ export class App extends Component {
         <h1>Phonebook</h1>
         <ContactForm
           onSubmit={this.handleSubmit}
-
         />
         
         <h2>Contacts</h2>
@@ -84,9 +86,11 @@ export class App extends Component {
           filter={this.state.filter}
           onChange={this.handleFilterChange}
         />
-        <ContactList
+        {filteredContacts.length === 0 ? <p>No contacts here</p> : <ContactList
           contacts={filteredContacts}
-        />
+          onDeleteContact={this.deleteContact}
+        />}
+        
 
         </>
     )
