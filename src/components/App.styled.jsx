@@ -1,19 +1,21 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-    padding: 50px 0px;
+    padding: 38px 0px;
     width: fit-content;
-    margin: 100px auto;
-    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+    margin: 20px auto;
+    box-shadow: rgb(12 0 90 / 35%) 0px 5px 15px;
     border-radius: 5px;
 `
 const PhonebookTitle = styled.h1`
+  color: ${props => props.theme.darkBlue};
     margin-top: 0px;
     margin-bottom: 30px;
     font-size: 28px;
     text-align: center;
 `
 const ContactsTitle = styled.h1`
+color:  ${props => props.theme.darkBlue};
     margin-top: 0px;
     margin-bottom: 30px;
     font-size: 20px;
@@ -27,7 +29,7 @@ const Section = styled.div`
 `
 const Note = styled.p`
     text-align: center;
-    color: rgb(120, 118, 117);
+    color: ${props => props.theme.lightGray};
 `
 
 export { Wrapper, PhonebookTitle, ContactsTitle, Section, Note };

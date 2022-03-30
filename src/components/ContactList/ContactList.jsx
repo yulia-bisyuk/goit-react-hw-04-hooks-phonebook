@@ -1,20 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { IconContext } from "react-icons";
+import { ListItem, List, DeleteButton } from './ContactList.styled';
+import { ImCancelCircle } from 'react-icons/im';
 
 const ContactList = ({contacts, onDeleteContact}) => (
-    <ul>
+    <List>
         {contacts.map(({id, name, number}) =>
 
-              (  <li key={id}>
+        (<ListItem key={id}>
             {name}: {number}
-            <button type='button'
-            onClick={()=>onDeleteContact(id)}>
-            Delete
-            </button>
-        </li>
-        ))
-                }
-        </ul>
+            <IconContext.Provider value={{ color: "#bc2525", size: "18px" }}>
+                <DeleteButton type='button'
+                onClick={()=>onDeleteContact(id)}>
+                <ImCancelCircle/>
+                </DeleteButton>
+            </IconContext.Provider>
+        </ListItem>
+                
+        ))}
+        </List>
 )
 
 ContactList.propTypes = {

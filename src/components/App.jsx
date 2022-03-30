@@ -3,7 +3,9 @@ import ContactForm from './ContactForm';
 import Filter from './Filter';
 import ContactList from './ContactList';
 import { nanoid } from 'nanoid';
-import {Wrapper, PhonebookTitle, ContactsTitle, Section, Note} from './App.styled'
+import { ThemeProvider } from 'styled-components';
+import theme from '../constants/theme';
+import { Wrapper, PhonebookTitle, ContactsTitle, Section, Note } from './App.styled';
 
 export class App extends Component {
 
@@ -28,7 +30,7 @@ export class App extends Component {
       if (contacts.some((contact) =>
         contact.name === name)) { return alert(`${name} is already in contacts`) }
           
-      else { return { contacts: [...contacts, newContact] } }
+      else { return { contacts: [newContact, ...contacts] } }
       
     })
   }
@@ -50,12 +52,11 @@ export class App extends Component {
 
   }
   
-  
-
   render() {
     const filteredContacts = this.getFilteredContacts();
 
     return (
+      <ThemeProvider theme={theme}>
       <Wrapper>
         <Section>
         <PhonebookTitle>Phonebook</PhonebookTitle>
@@ -80,6 +81,7 @@ export class App extends Component {
         
 </Section>
         </Wrapper>
+        </ThemeProvider>
     )
   }
 };
