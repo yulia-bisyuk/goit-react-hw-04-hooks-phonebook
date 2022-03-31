@@ -32,11 +32,11 @@ export class App extends Component {
           
       else { return { contacts: [newContact, ...contacts] } }
       
-    })
+      })
   }
 
   deleteContact = (id) => {
-    this.setState(({contacts}) => 
+    this.setState(({ contacts }) => 
     ({contacts: contacts.filter(contact => contact.id !== id)})
     )
   }
@@ -56,32 +56,32 @@ export class App extends Component {
     const filteredContacts = this.getFilteredContacts();
 
     return (
-      <ThemeProvider theme={theme}>
-      <Wrapper>
+    <ThemeProvider theme={theme}>
+        <Wrapper>
+          
         <Section>
-        <PhonebookTitle>Phonebook</PhonebookTitle>
-
-        <ContactForm
+          <PhonebookTitle>Phonebook</PhonebookTitle>
+          <ContactForm
           onSubmit={this.addContact}
           />
-          </Section>
+        </Section>
+          
         <Section>
-        <ContactsTitle>Contacts</ContactsTitle>
-
-        <Filter
+          <ContactsTitle>Contacts</ContactsTitle>
+          <Filter
           value={this.state.filter}
           onChange={this.changeFilter}
-        />
-        {filteredContacts.length === 0
+          />
+          {filteredContacts.length === 0
           ? <Note>No contacts here</Note>
           : <ContactList
           contacts={filteredContacts}
           onDeleteContact={this.deleteContact}
         />}
-        
-</Section>
-        </Wrapper>
-        </ThemeProvider>
+        </Section>
+          
+      </Wrapper>
+    </ThemeProvider>
     )
   }
 };
