@@ -1,8 +1,8 @@
 {
-  "name": "goit-react-hw-02-phonebook",
+  "name": "goit-react-hw-03-phonebook",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://yulia-bisyuk.github.io/goit-react-hw-02-phonebook/",
+  "homepage": "https://yulia-bisyuk.github.io/goit-react-hw-03-phonebook/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -48,7 +48,7 @@
     "prettier": "^2.6.1"
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix",
-    "*.{js,css,md}": "prettier --write"
+    "*.{js,jsx}": "eslint --cache --fix",
+    "*.{js,jsx,css,md}": "prettier --write"
   }
 }
