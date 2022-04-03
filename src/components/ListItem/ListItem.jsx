@@ -11,7 +11,7 @@ const ListItem = ({ id, name, number, handleDelete }) => (
         {name}: {number}
         <IconContext.Provider value={{ color: "#bc2525", size: "18px" }}>
             <DeleteButton type='button'
-                onClick={()=>handleDelete(id)}>
+                onClick={() => handleDelete(id)}>
                 <ImCancelCircle />
             </DeleteButton>
         </IconContext.Provider>
