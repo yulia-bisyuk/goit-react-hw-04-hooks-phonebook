@@ -1,8 +1,8 @@
 {
-  "name": "goit-react-hw-03-phonebook",
+  "name": "goit-react-hw-04-hooks-phonebook",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://yulia-bisyuk.github.io/goit-react-hw-03-phonebook/",
+  "homepage": "https://yulia-bisyuk.github.io/goit-react-hw-04-hooks-phonebook/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -42,13 +42,15 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^8.11.0",
+    "eslint": "^8.13.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.7",
-    "prettier": "^2.6.1"
+    "prettier": "^2.6.2"
   },
   "lint-staged": {
     "*.{js,jsx}": "eslint --cache --fix",
-    "*.{js,jsx,css,md}": "prettier --write"
+    "*.{js,jsx,css,md}": "prettier --write",
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
   }
 }
