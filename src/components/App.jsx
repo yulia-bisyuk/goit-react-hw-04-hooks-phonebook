@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 import ContactForm from './ContactForm';
 import Filter from './Filter';
 import ContactList from './ContactList';
@@ -13,92 +13,71 @@ import {
   Note,
 } from './App.styled';
 
-export class App extends Component {
-  state = {
-    contacts: [
-      // {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-      // {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-      // {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-      // {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
-    ],
-    filter: '',
-  };
+export const App = () => {
+  const [contacts, setContacts] = useState(
+    () => JSON.parse(localStorage.getItem('contacts')) ?? []
+  );
+  const [filter, setFilter] = useState('');
 
-  componentDidMount() {
-    const savedContacts = JSON.parse(localStorage.getItem('contacts'));
-    console.log(savedContacts);
-    if (savedContacts) this.setState({ contacts: savedContacts });
-  }
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
-
-  addContact = ({ name, number }) => {
+  const addContact = (name, number) => {
     const newContact = {
       name,
       number,
       id: nanoid(),
     };
 
-    this.setState(({ contacts }) => {
-      if (
-        contacts.some(
-          contact => contact.name.toLowerCase() === name.toLowerCase()
-        )
-      ) {
-        return alert(`${name} is already in contacts`);
-      } else {
-        return { contacts: [newContact, ...contacts] };
-      }
-    });
+    if (
+      contacts.some(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      return alert(`${name} is already in contacts`);
+    } else {
+      setContacts(contacts => [newContact, ...contacts]);
+    }
   };
 
-  deleteContact = id => {
-    this.setState(({ contacts }) => ({
-      contacts: contacts.filter(contact => contact.id !== id),
-    }));
+  const deleteContact = id => {
+    setContacts(contacts => contacts.filter(contact => contact.id !== id));
   };
 
-  changeFilter = e => {
-    this.setState({ filter: e.currentTarget.value });
+  const changeFilter = e => {
+    setFilter(e.currentTarget.value);
   };
 
-  getFilteredContacts = () => {
-    const { contacts, filter } = this.state;
-    const normalizedFilter = filter.toLowerCase();
+  const getFilteredContacts = () => {
     return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter)
+      contact.name.toLowerCase().includes(filter.toLowerCase())
     );
   };
 
-  render() {
-    const filteredContacts = this.getFilteredContacts();
+  const filteredContacts = getFilteredContacts();
 
-    return (
-      <ThemeProvider theme={theme}>
-        <Wrapper>
-          <Section>
-            <PhonebookTitle>Phonebook</PhonebookTitle>
-            <ContactForm onSubmit={this.addContact} />
-          </Section>
+  return (
+    <ThemeProvider theme={theme}>
+      <Wrapper>
+        <Section>
+          <PhonebookTitle>Phonebook</PhonebookTitle>
+          <ContactForm onSubmit={addContact} />
+        </Section>
 
-          <Section>
-            <ContactsTitle>Contacts</ContactsTitle>
-            <Filter value={this.state.filter} onChange={this.changeFilter} />
-            {filteredContacts.length === 0 ? (
-              <Note>No contacts here</Note>
-            ) : (
-              <ContactList
-                contacts={filteredContacts}
-                onDeleteContact={this.deleteContact}
-              />
-            )}
-          </Section>
-        </Wrapper>
-      </ThemeProvider>
-    );
-  }
-}
+        <Section>
+          <ContactsTitle>Contacts</ContactsTitle>
+          <Filter value={filter} onChange={changeFilter} />
+          {filteredContacts.length === 0 ? (
+            <Note>No contacts here</Note>
+          ) : (
+            <ContactList
+              contacts={filteredContacts}
+              onDeleteContact={deleteContact}
+            />
+          )}
+        </Section>
+      </Wrapper>
+    </ThemeProvider>
+  );
+};
